@@ -1,0 +1,18 @@
+[
+  {
+    "ID": 226823241,
+    "Sex": "female",
+    "Name": "Камила",
+    "SName": "Файнгерш",
+    "group": "user",
+    "lastmove": "AddinLine"
+  },
+  {
+    "ID": 141896807,
+    "Sex": "male",
+    "Name": "Игнат",
+    "SName": "Игнатов",
+    "group": "user",
+    "lastmove": "line"
+  }
+]
