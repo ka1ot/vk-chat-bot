@@ -1,18 +1,191 @@
 [
   {
-    "ID": 226823241,
-    "Sex": "female",
-    "Name": "Камила",
-    "SName": "Файнгерш",
-    "group": "user",
-    "lastmove": "AddinLine"
-  },
-  {
     "ID": 141896807,
     "Sex": "male",
     "Name": "Игнат",
     "SName": "Игнатов",
     "group": "user",
-    "lastmove": "line"
+    "lastmove": "CoinFlip",
+    "birthday": "25.12"
+  },
+  {
+    "ID": 226823241,
+    "Sex": "female",
+    "Name": "Камила",
+    "SName": "Файнгерш",
+    "group": "user",
+    "lastmove": "AddinLine",
+    "birthday": "5.11.2002"
+  },
+  {
+    "ID": 353449011,
+    "Sex": "female",
+    "Name": "Мария",
+    "SName": "Карелина",
+    "group": "user",
+    "lastmove": "AddinLine",
+    "birthday": "21.9"
+  },
+  {
+    "ID": 568100983,
+    "Sex": "male",
+    "Name": "Андрей",
+    "SName": "Анохин",
+    "group": "user",
+    "lastmove": "rasp_menu",
+    "birthday": "29.5.2004"
+  },
+  {
+    "ID": 313304172,
+    "Sex": "male",
+    "Name": "Егор",
+    "SName": "Стариков",
+    "group": "user",
+    "lastmove": "AddinLine",
+    "birthday": "9.1.2004"
+  },
+  {
+    "ID": 309992582,
+    "Sex": "male",
+    "Name": "Ярослав",
+    "SName": "Марцевой",
+    "group": "user",
+    "lastmove": "RequiestNo",
+    "birthday": "11.9"
+  },
+  {
+    "ID": 332613028,
+    "Sex": "male",
+    "Name": "Борис",
+    "SName": "Комков",
+    "group": "user",
+    "lastmove": "AddinLine",
+    "birthday": "7.9"
+  },
+  {
+    "ID": 326299209,
+    "Sex": "male",
+    "Name": "Андрей",
+    "SName": "Гусев",
+    "group": "user",
+    "lastmove": "AddinLine",
+    "birthday": "15.10.1920"
+  },
+  {
+    "ID": 190576505,
+    "Sex": "male",
+    "Name": "Артём",
+    "SName": "Кислов",
+    "group": "user",
+    "lastmove": "AddinLine",
+    "birthday": "20.11"
+  },
+  {
+    "ID": 542036708,
+    "Sex": "male",
+    "Name": "Иван",
+    "SName": "Ангелов",
+    "group": "user",
+    "lastmove": "RequiestNo",
+    "birthday": "15.10.2002"
+  },
+  {
+    "ID": 352867524,
+    "Sex": "male",
+    "Name": "Петр",
+    "SName": "Денисов",
+    "group": "user",
+    "lastmove": "rasp_menu",
+    "birthday": "25.7.2004"
+  },
+  {
+    "ID": 461219200,
+    "Sex": "female",
+    "Name": "Мария",
+    "SName": "Кулькова",
+    "group": "user",
+    "lastmove": "AddinLine",
+    "birthday": "1.7"
+  },
+  {
+    "ID": 480656174,
+    "Sex": "female",
+    "Name": "Алиса",
+    "SName": "Иванова",
+    "group": "user",
+    "lastmove": "AddinLine",
+    "birthday": "8.3.2003"
+  },
+  {
+    "ID": 229699123,
+    "Sex": "male",
+    "Name": "Даниил",
+    "SName": "Маслобойников",
+    "group": "user",
+    "lastmove": "rasp_menu",
+    "birthday": "20.11"
+  },
+  {
+    "ID": 196864851,
+    "Sex": "male",
+    "Name": "Леша",
+    "SName": "Минов",
+    "group": "user",
+    "lastmove": "AddinLine",
+    "birthday": "22.7"
+  },
+  {
+    "ID": 381699877,
+    "Sex": "male",
+    "Name": "Сергей",
+    "SName": "Чагин",
+    "group": "user",
+    "lastmove": "RequiestNo",
+    "birthday": "12.6"
+  },
+  {
+    "ID": 184809926,
+    "Sex": "male",
+    "Name": "Влад",
+    "SName": "Кузин",
+    "group": "user",
+    "lastmove": "AddinLine",
+    "birthday": "14.9"
+  },
+  {
+    "ID": 325319962,
+    "Sex": "male",
+    "Name": "Матвей",
+    "SName": "Щипков",
+    "group": "user",
+    "lastmove": "rasp_menu",
+    "birthday": "20.10"
+  },
+  {
+    "ID": 248543276,
+    "Sex": "male",
+    "Name": "Вадим",
+    "SName": "Румянцев",
+    "group": "user",
+    "lastmove": "rasp_menu",
+    "birthday": "4.11"
+  },
+  {
+    "ID": 376750513,
+    "Sex": "male",
+    "Name": "Тёма",
+    "SName": "Секирин",
+    "group": "user",
+    "lastmove": "RequiestNo",
+    "birthday": "25.8.2000"
+  },
+  {
+    "ID": 332583309,
+    "Sex": "male",
+    "Name": "Артем",
+    "SName": "Васильев",
+    "group": "user",
+    "lastmove": "rasp_menu",
+    "birthday": "1.1.1995"
   }
 ]

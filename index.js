@@ -4,59 +4,70 @@ const fs = require('fs');
 const hearManager = new HearManager('<MessageContext>')
 
 const vk = new VK({
-    token: "vk1.a.RFDqFcWuswev4sVGALmyDZVqgVsYoGWQiCi3SA4M5mqZ41i9VucVewcEdRfpZbhQeRnVnaf1WSIslBDampAJT1_5bRY5GSAlAQIWZr3l1K5dTHb1MpWNlYW-pi4U-5-LiX6VEKqyNAwtX8PH-0uP8m4fmE1xpzWxtTVJztg15ZtSGre04NLbP5HTGtb2wUgW8PlI6x56wdsJUBFCfCV1Pw"
+    token: "API Ключ"
 })
 
 var timer = setInterval(function(){
- let date = DateToDay();
+ let date = DatextoDay();
  let arr = ParseUsers('endline');
-    if((date[2] == 'вт')&&(date[3] == '22')&&((date[4] >= '10')&&(date[4] <= '40'))){
+ /*send line*/
+    if((date[2] == 'ср')&&(date[3] == '22')&&((date[4] >= '00')&&(date[4] <= '10'))){
         if(arr == 0){
             LineOut();
-            console.log('1 st ok'); 
-        }else{
-            console.log('1 st bad');
+            console.log('!BOT! Bild and auto send Table');
         }
     }else{
-        console.log('wtf ?');
+        if(arr != 0){
+            arr = [];
+            fs.writeFileSync('json/endline.json', JSON.stringify(arr, null, 2), finished);
+                function finished(err){
+                    console.log('err adduser in JSON with addrep.js');
+                }
+        console.log('!BOT! clear all files');      
+        }
     }
-},1000);
+/*birthday and date*/
+},120000);
 
 const bot = new HearManager()
 
-const IDsends = [getRandIDman(),getRandIDwoman(),getRandIDall()];
+const IDsends = [getRandom(100000,990999),getRandom(100000,999099),getRandom(100000,999909)];
 
 vk.updates.on('message_new', bot.middleware)
 
 /*Фунции*/
-function DateToDay(){
-    let date = new Date();
-    let Day = date.getDay();
+function DatextoDay(){
+let date = new Date();
+Day = numtoday(date.getDay());
+let DateNow =[date.getDate(),date.getMonth()+1,Day,date.getHours(),date.getMinutes(),date.getSeconds()];
+return DateNow;
+}
+
+function numtoday(Day){
     switch(Day){
-    case 1:
-        Day = 'пн';
-    break;
-    case 2:
-        Day = 'вт';
-    break;
-    case 3:
-        Day = 'ср';
-    break;
-    case 4:
-        Day = 'чт';
-    break;
-    case 5:
-        Day = 'пт';
-    break;
-    case 6:
-        Day = 'сб';
-    break;
-    case 0:
-        Day = 'вс';
-    break;
+        case 1:
+            Day = 'пн';
+        break;
+        case 2:
+            Day = 'вт';
+        break;
+        case 3:
+            Day = 'ср';
+        break;
+        case 4:
+            Day = 'чт';
+        break;
+        case 5:
+            Day = 'пт';
+        break;
+        case 6:
+            Day = 'сб';
+        break;
+        case 0:
+            Day = 'вс';
+        break;
     }
-    let DateNow =[date.getDate(),date.getMonth(),Day,date.getHours(),date.getMinutes(),date.getSeconds()];
-    return DateNow;
+    return Day;
 }
 
 function LineToArr(message){
@@ -64,10 +75,10 @@ function LineToArr(message){
     if((/[0-9]/).test(id)){
         let textmsg = message.slice(7);
         switch(id){
-        case IDsends[0]:
+        case IDsends[1]:
             SendSexMsg('male',textmsg);
         break;
-        case IDsends[1]:
+        case IDsends[0]:
             SendSexMsg('female',textmsg);
         break;
         case IDsends[2]:
@@ -80,20 +91,8 @@ function LineToArr(message){
     }
 }
 
-function getRandomID(min, max) {
-    return Math.floor(Math.random() * (99999999999999 - 1)) + 1;
-}
-
-function getRandIDman() {
-    return Math.floor(Math.random() * (999999 - 100000)) + 100000;
-}
-
-function getRandIDwoman() {
-    return Math.floor(Math.random() * (999999 - 100000)) + 100000;
-}
-
-function getRandIDall() {
-    return Math.floor(Math.random() * (999999 - 100000)) + 100000;
+function getRandom(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function ParseUsers(arr){
@@ -105,17 +104,17 @@ function ParseUsers(arr){
 function SendAllmsg(message){
     user = ParseUsers('users');
     for(let id=0; id <= user.length-1;id++){
-        vk.api.messages.send({user_id: user[id].ID, random_id: getRandomID(), message: message})
+        vk.api.messages.send({user_id: user[id].ID, random_id: getRandom(1, 99999999999999), message: message})
     }
 }
 
-function CheckUser(userid, name, family, sex, code){
+function CheckUser(userid, name, family, sex, code, bdate){
     var user = ParseUsers('users');
     let CheckUserCode = 0;
     for(let id = 0; id <= user.length-1; id++){
         if(user[id].ID == userid){
-            let info = [user[id].ID, user[id].Sex, user[id].Name, user[id].SName, user[id].group, code];
-            user[id] = {ID: info[0], Sex: info[1], Name: info[2], SName: info[3], group: info[4], lastmove: info[5]};
+            let info = [user[id].ID, user[id].Sex, user[id].Name, user[id].SName, user[id].group, code, bdate];
+            user[id] = {ID: info[0], Sex: info[1], Name: info[2], SName: info[3], group: info[4], lastmove: info[5], birthday: bdate};
             fs.writeFileSync('json/users.json', JSON.stringify(user, null, 2), finished);
             function finished(err){
                 console.log('err adduser in JSON with addrep.js');
@@ -134,7 +133,7 @@ function CheckUser(userid, name, family, sex, code){
             }else{
                 sex = 'male';
             }
-            useradd[useradd.length] = {ID: userid, Sex: sex, Name: name, SName: family, group: 'user', lastmove: code};
+            useradd[useradd.length] = {ID: userid, Sex: sex, Name: name, SName: family, group: 'user', lastmove: code, birthday: bdate};
             fs.writeFileSync('json/users.json', JSON.stringify(useradd, null, 2), finished);
             function finished(err){
                 console.log('err adduser in JSON with addrep.js');
@@ -159,7 +158,7 @@ function SendSexMsg(gender,message){
     user = ParseUsers('users');
     for(let id=0; id <= user.length-1;id++){
         if(user[id].Sex == gender){
-            vk.api.messages.send({user_id: user[id].ID, random_id: getRandomID(), message: message})
+            vk.api.messages.send({user_id: user[id].ID, random_id: getRandom(1, 99999999999999), message: message})
         }
     }
 }
@@ -168,7 +167,7 @@ function SendIdMsg(Id,message){
     user = ParseUsers('users');
     for(let id=0; id <= user.length-1;id++){
         if(parseInt(user[id].ID) == parseInt(Id)){
-            vk.api.messages.send({user_id: Id, random_id: getRandomID(), message: message})
+            vk.api.messages.send({user_id: Id, random_id: getRandom(1, 99999999999999), message: message})
         }
     }
 }
@@ -188,38 +187,37 @@ function CheckRoot(UserID){
 }
 
 function LineOut(){
-    var users = ParseUsers('users');
-    var users1 = ParseUsers('onework');
-    var users2 = ParseUsers('twoworks');
-    var users3 = ParseUsers('threeworks');
-    var users4 = ParseUsers('fourworks');
-    var users5 = ParseUsers('NOline');
-    var out = ParseUsers('endline');
+    let users1 = ParseUsers('onework');
+    let users2 = ParseUsers('twoworks');
+    let users3 = ParseUsers('threeworks');
+    let users4 = ParseUsers('fourworks');
+    let users5 = ParseUsers('NOline');
+    let out = ParseUsers('endline');
+    if(users5.length != 0){
+        for(let id = 0; id <= users5.length-1; id++){
+            out[out.length] = {ID: users5[id].ID, Name: users5[id].Name, SName: users5[id].SName};
+        }
+    }//1 write NO
     if(users1.length != 0){
         for(let id = 0; id <= users1.length-1; id++){
-            out[out.length+id] = users1[id];
+            out[out.length] = {ID: users1[id].ID, Name: users1[id].Name, SName: users1[id].SName};
         }
-    }
-    if(users1.length != 0){
-        for(let id = 0; id <= users2.length-1; id++){
-            out[out.length+id] = users2[id];
-        }
-    }
-    if(users1.length != 0){
+    }// 2 write 1 work
+    if(users3.length != 0){
         for(let id = 0; id <= users3.length-1; id++){
-            out[out.length+id] = users3[id];
+            out[out.length] = {ID: users3[id].ID, Name: users3[id].Name, SName: users3[id].SName};
         }
-    }
-    if(users1.length != 0){
+    }// 3 write 3 work
+    if(users4.length != 0){
         for(let id = 0; id <= users4.length-1; id++){
-            out[out.length+id] = users4[id];
+            out[out.length] = {ID: users4[id].ID, Name: users4[id].Name, SName: users4[id].SName};
         }
-    }
-    if(users1.length != 0){
-        for(let id = 0; id <= users5.length-1; id++){
-            out[out.length+id] = users5[id];
+    }//4 write 4 work
+    if(users2.length != 0){
+        for(let id = 0; id <= users2.length-1; id++){
+            out[out.length] = {ID: users2[id].ID, Name: users2[id].Name, SName: users2[id].SName};
         }
-    }
+    }//5 write 2 work
     users1 = [];
     users2 = [];
     users3 = [];
@@ -250,18 +248,14 @@ function LineOut(){
         console.log('err adduser in JSON with addrep.js');
     }
     let text = 'Итоги <br>';
-    console.log(users[1].ID);
-    if(out == 0){
-        for(let idout = 0; idout <= out.length; idout++){
-            for(let idusers = 0; idusers <= users.length; idusers++){
-                if(out[idout].ID == users[idusers].ID){
-                    text = text + idout + ".  "+ users[idusers].SName + " " + users[idusers].Name + '<br>';
-                }
-            }
+    let end = ParseUsers('endline');
+    if(end != 0){
+        for(let id = 1; id <= end.length; id++){
+            text = text + id + ".  "+ end[id-1].SName + " " + end[id-1].Name + '<br>';
         }
-        console.log(text);
+        SendAllmsg(text);
     }else{
-        console.log('whaa ?');
+        console.log('gdeto oshibka...');
     }
 }
 
@@ -329,7 +323,7 @@ function CheckLines(UserID){
     }
 }
 
-function AddinLines(UserID, msg){
+function AddinLines(UserID, msg, name, family){
     let lastmove = CheckLastMove(UserID);
     console.log(lastmove);
     if(lastmove == 'RequiestYes'){
@@ -337,7 +331,7 @@ function AddinLines(UserID, msg){
         switch(msg){
             case '1':
                 user = ParseUsers('onework');
-                user[user.length] = {ID: UserID};
+                user[user.length] = {ID: UserID, SName: family, Name: name};
                 fs.writeFileSync('json/onework.json', JSON.stringify(user, null, 2), finished);
                 console.log(UserID+'был записан в файл onework');
                 function finished(err){
@@ -346,7 +340,7 @@ function AddinLines(UserID, msg){
             break;
             case '2':
                 user = ParseUsers('twoworks');
-                user[user.length] = {ID: UserID};
+                user[user.length] = {ID: UserID, SName: family, Name: name};
                 console.log(UserID+'был записан в файл twoworks');
                 fs.writeFileSync('json/twoworks.json', JSON.stringify(user, null, 2), finished);
                 function finished(err){
@@ -355,7 +349,7 @@ function AddinLines(UserID, msg){
             break;
             case '3':
                 user = ParseUsers('threeworks');
-                user[user.length] = {ID: UserID};
+                user[user.length] = {ID: UserID, SName: family, Name: name};
                 console.log(UserID+'был записан в файл threeworks');
                 fs.writeFileSync('json/threeworks.json', JSON.stringify(user, null, 2), finished);
                 function finished(err){
@@ -364,7 +358,7 @@ function AddinLines(UserID, msg){
             break;
             case '4':
                 user = ParseUsers('fourworks');
-                user[user.length] = {ID: UserID};
+                user[user.length] = {ID: UserID, SName: family, Name: name};
                 console.log(UserID+'был записан в файл fourworks');
                 fs.writeFileSync('json/fourworks.json', JSON.stringify(user, null, 2), finished);
                 function finished(err){
@@ -375,7 +369,7 @@ function AddinLines(UserID, msg){
     }
     if(lastmove == 'RequiestNo'){
         user = ParseUsers('NOline');
-        user[user.length] = {ID: UserID};
+        user[user.length] = {ID: UserID, SName: family, Name: name};
         console.log(UserID+'был записан в файл NOline');
         fs.writeFileSync('json/NOline.json', JSON.stringify(user, null, 2), finished);
         function finished(err){
@@ -397,16 +391,59 @@ function SaveLastMove(UserID, move){
     }
 }
 
+function Coinflip(){
+    let randnum = getRandom(0,100)
+    if(randnum == getRandom(1,100)){
+        return 'Ребро xD';
+        //ребро
+    }else{
+        if(randnum%2 == 0){
+            return 'Решка';
+            //решка
+        }else{
+            return 'Орёл';
+            //орел
+        }
+    }
+}
+
+function randnum(id, msg){
+    let out = 0;
+    if((/[0-9],.[0-9]/).test(msg)){
+        let arr = msg.split(",");
+        arr[0] = parseInt(arr[0]);
+        arr[1] = parseInt(arr[1]);
+        if(arr[0] != arr[1]){
+            if(arr[0] < arr[1]){
+                out = 'Допустим это будет = '+ getRandom(arr[0], arr[1]);  
+            }else{
+                out = 'Допустим это будет = '+ getRandom(arr[1], arr[0]);  
+            }
+        }else{
+            out = 'Числа равны...';
+        }
+    }else{
+        out = 'Что-то не так!';
+    }
+    SendIdMsg(id, out);
+    SendIdMsg(id, main_menu);
+}
+
+
 /*Keyboards*/
 
 const main_menu = Keyboard.keyboard([
 [
         Keyboard.textButton({
-            label: 'Расписание',
+            label: 'Очередь',
             color: Keyboard.SECUNDARY_COLOR
         })],[//можно убрать если хочешь чтобы кнопки были | | нужно заменит ],[ на ,
         Keyboard.textButton({
-            label: 'Очередь',
+            label: 'Расписание',
+            color: Keyboard.NEGATIVE_COLOR
+        })],[//можно убрать если хочешь чтобы кнопки были | | нужно заменит ],[ на ,
+        Keyboard.textButton({
+            label: 'Рандом',
             color: Keyboard.SECUNDARY_COLOR
         })
     ]
@@ -416,11 +453,11 @@ const Question_Yes_or_Not = Keyboard.keyboard([
 [
         Keyboard.textButton({
             label: 'Да',
-            color: Keyboard.SECUNDARY_COLOR
+            color: Keyboard.POSITIVE_COLOR
         })],[//можно убрать если хочешь чтобы кнопки были | | нужно заменит ],[ на ,
         Keyboard.textButton({
             label: 'Нет',
-            color: Keyboard.SECUNDARY_COLOR
+            color: Keyboard.NEGATIVE_COLOR
         })
     ]
 ]);
@@ -437,11 +474,11 @@ const Question_How_Much = Keyboard.keyboard([
         })],[
         Keyboard.textButton({
             label: '3',
-            color: Keyboard.SECUNDARY_COLOR
+            color: Keyboard.PRIMARY_COLOR
         }),
         Keyboard.textButton({
             label: '4',
-            color: Keyboard.SECUNDARY_COLOR
+            color: Keyboard.NEGATIVE_COLOR
         })
     ]
 ]);
@@ -477,58 +514,140 @@ const send_msg = Keyboard.keyboard([
     ]
 ]);
 
+const chetnechet = Keyboard.keyboard([
+[
+        Keyboard.textButton({
+            label: 'Четная неделя',
+            color: Keyboard.SECUNDARY_COLOR
+        })
+        ],[//можно убрать если хочешь чтобы кнопки были | | нужно заменит ],[ на ,
+        Keyboard.textButton({
+            label: 'Нечетная неделя',
+            color: Keyboard.SECUNDARY_COLOR
+        })
+    ]
+]);
+
+const dayweek = Keyboard.keyboard([
+[
+        Keyboard.textButton({
+            label: 'Понедельник',
+            color: Keyboard.SECUNDARY_COLOR
+        }),
+        Keyboard.textButton({
+            label: 'Вторник',
+            color: Keyboard.SECUNDARY_COLOR
+        })
+        ],[//можно убрать если хочешь чтобы кнопки были | | нужно заменит ],[ на ,
+        Keyboard.textButton({
+            label: 'Среда',
+            color: Keyboard.SECUNDARY_COLOR
+        })
+        ],[
+        Keyboard.textButton({
+            label: 'Четверг',
+            color: Keyboard.SECUNDARY_COLOR
+        }),
+        Keyboard.textButton({
+            label: 'Пятница',
+            color: Keyboard.SECUNDARY_COLOR
+        })
+        ]
+]);
+
+const randomize_menu = Keyboard.keyboard([
+[
+        Keyboard.textButton({
+            label: 'от N до M',
+            color: Keyboard.SECUNDARY_COLOR
+        })],[//можно убрать если хочешь чтобы кнопки были | | нужно заменит ],[ на ,
+        Keyboard.textButton({
+            label: 'Бросить монетку',
+            color: Keyboard.SECUNDARY_COLOR
+        })],[//можно убрать если хочешь чтобы кнопки были | | нужно заменит ],[ на ,
+        Keyboard.textButton({
+            label: 'Назад в меню',
+            color: Keyboard.NEGATIVE_COLOR
+        })]
+]);
+
 /*команды бота*/
 
 bot.hear(/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/, async(msg) => {
+    const [user_info] = await vk.api.users.get({user_id: msg.senderId, fields: 'sex' })
+    const [user_info_bdate] = await vk.api.users.get({user_id: msg.senderId, fields: 'bdate' })
     let code = 'ok';
     {
-        if(((/привет/i).test(msg.text)) || ((/hellow/i).test(msg.text)) || ((/ghbdtn/i).test(msg.text)) || ((/меню/i).test(msg.text))){
-            code = 'menu';
-        }  //code menu +//
+        {
+            if(((/привет/i).test(msg.text)) || ((/hellow/i).test(msg.text)) || ((/ghbdtn/i).test(msg.text)) || ((/меню/i).test(msg.text))|| ((/начать/i).test(msg.text))|| ((/старт/i).test(msg.text))){
+                code = 'menu';
+            }  //code menu +//
 
-        if(((/Расписание/i).test(msg.text)) || ((/hfcgbcfybt/i).test(msg.text))){
-            code = 'rasp_menu';
-        }  //code rasp +func//
+            if(((/Расписание/i).test(msg.text)) || ((/hfcgbcfybt/i).test(msg.text))){
+                code = 'rasp_menu';
+            }  //code rasp +func//
 
-        if(((/Очередь/i).test(msg.text)) || ((/jxthtlm/i).test(msg.text))){
-            code = 'line';
-        }  //code line +func//
+            if(((/Очередь/i).test(msg.text)) || ((/jxthtlm/i).test(msg.text))){
+                code = 'line';
+            }  //code line +func//
 
-        if((msg.text == '1')||(msg.text == '2')||(msg.text == '3')||(msg.text == '4')||(msg.text == '5')){
-            code = 'AddinLine';
-        }
-        if(msg.text == 'Да'){
-            code = 'RequiestYes';
-        }
-        if(msg.text == 'Нет'){
-            code = 'RequiestNo';
+            if((msg.text == '1')||(msg.text == '2')||(msg.text == '3')||(msg.text == '4')||(msg.text == '5')){
+                code = 'AddinLine';
+            }
+            if(msg.text == 'Да'){
+                code = 'RequiestYes';
+            }
+            if(msg.text == 'Нет'){
+                code = 'RequiestNo';
+            }
+            if((msg.text == 'Понедельник')&&(msg.text == 'Вторник')&&(msg.text == 'Среда')&&(msg.text == 'Четверг')&&(msg.text == 'Пятница')){
+                code = 'RaspDay';
+            }
+            if((msg.text == 'Четная неделя')&&(msg.text == 'Нечетная неделя')){
+                code = 'ChetNechet';
+            }
+            if((msg.text == 'Рандом')){
+                code = 'Randomize';
+            }
+            if((msg.text == 'Бросить монетку')){
+                code = 'CoinFlip';
+            }
+            if((msg.text == 'Назад в меню')){
+                code = 'menu';
+            }
+            if((msg.text == 'от N до M')){
+                code = 'randnuminfo';
+            }
+            if((/[0-9]. [0-9]/).test(msg.text)){
+                code = 'randnum';
+            }
         }
         /* Админ часть*/
+        {
+            if(((/adm/i).test(msg.text)) || ((/admin/i).test(msg.text))){
+                code = 'admin_pannel';
+            }//code admin_pannel =//
 
-        if(((/adm/i).test(msg.text)) || ((/admin/i).test(msg.text))){
-            code = 'admin_pannel';
-        }//code admin_pannel =//
+            if(("Рассылка" == msg.text) || ((/hfccskrf/i).test(msg.text))){
+                code = 'send_menu';
+            } //code send//
 
-        if(("Рассылка" == msg.text) || ((/hfccskrf/i).test(msg.text))){
-            code = 'send_menu';
-        } //code send//
+            if(((/Редактировать.очередь/i).test(msg.text)) || ((/htlfrnbhjdfn.jxthtlm/i).test(msg.text))){
+                code = 'line_edit';
+            }  //code line_edit +func//
 
-        if(((/Редактировать.очередь/i).test(msg.text)) || ((/htlfrnbhjdfn.jxthtlm/i).test(msg.text))){
-            code = 'line_edit';
-        }  //code line_edit +func//
+            if(('Отправить всем девушкам' == msg.text) || ((/Jnghfdbnm.dctv.ltdeirfv/i).test(msg.text)) || ((/send.w/i).test(msg.text))){
+                code = 'send_w';
+            }//code send_w//
 
-        if(('Отправить всем девушкам' == msg.text) || ((/Jnghfdbnm.dctv.ltdeirfv/i).test(msg.text)) || ((/send.w/i).test(msg.text))){
-            code = 'send_w';
-        }//code send_w//
+            if(('Отправить всем парням' == msg.text) || ((/Jnghfdbnm.dctv.gfhyzv/i).test(msg.text)) || ((/send.m/i).test(msg.text))){
+                code = 'send_m';
+            } //code send_m//
 
-        if(('Отправить всем парням' == msg.text) || ((/Jnghfdbnm.dctv.gfhyzv/i).test(msg.text)) || ((/send.m/i).test(msg.text))){
-            code = 'send_m';
-        } //code send_m//
-
-        if(('Отправить всем' == msg.text) || ((/Jnghfdbnm.dctv/i).test(msg.text)) || ((/send.all/i).test(msg.text))){
-            code = 'send_all';
+            if(('Отправить всем' == msg.text) || ((/Jnghfdbnm.dctv/i).test(msg.text)) || ((/send.all/i).test(msg.text))){
+                code = 'send_all';
+            }
         }
-
         if(code == 'ok'){
            code = 'err'; 
         }
@@ -545,15 +664,14 @@ bot.hear(/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/, async(msg) => {
             });
         break;
         case 'rasp_menu':
+            RaspOut(msg.senderId);
             msg.send({
-                message: 'Расписание 📅',
                 keyboard: main_menu.oneTime()
             });
-            RaspOut(msg.senderId);
         break;
         case 'line':
-            let date = DateToDay();
-            if((date[2] == 'вс')&&((date[3] >= '12')&&(date[3] <= '23'))){
+            let date = DatextoDay();
+            if((date[2] == 'ср')&&((date[3] >= '12')&&(date[3] < '22'))){
                 time = true;
             }else{
                 time = false;
@@ -568,7 +686,7 @@ bot.hear(/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/, async(msg) => {
                     break;
                     case false:
                         msg.send({
-                            message: 'Не варик, запись закрыта до пятницы 12:00 😿',
+                            message: 'Не варик, запись закрыта до четверга 12:00 😿',
                             keyboard: main_menu.oneTime()
                         });
                     break;
@@ -580,6 +698,22 @@ bot.hear(/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/, async(msg) => {
                 });
             }
         break;
+        case 'Randomize':
+            msg.send({
+                message: 'Можно загадать число от 0 до 10 или бросить монетку',
+                keyboard: randomize_menu.oneTime()
+            });
+        break;
+        case 'RaspDay':
+            msg.send({
+                message: 'Прости но я пока ещё не могу определить какая у вас неделя по счёту.<br>Тыкни чё там тебе нужно.',
+                keyboard: main_menu.oneTime()//chetnechet.oneTime
+            });
+            /*'Расписание 📅'*/
+            //сюда пихаем ответ с пн по пятницу и выводим
+            //Из ласт мува надо забрать что пользователь тыкнул, чет или нечет
+        break;
+
         /*🙋‍*/
         /*Админ часть*/
 
@@ -662,10 +796,10 @@ bot.hear(/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/, async(msg) => {
             SaveLastMove(msg.senderId, code);
             if(CheckLines(msg.senderId) == true){
                 msg.send({
-                    message: 'Ля какой, Я добавил тебя в списки, жди до 22:00, я скину в автоматическом режиме итоговый список',
+                    message: 'Ля какой, Я добавил тебя в списки, жди до 22, я скину в автоматическом режиме итоговый список',
                     keyboard: main_menu.oneTime()
                 });
-                AddinLines(msg.senderId, msg.text);
+                AddinLines(msg.senderId, msg.text, user_info.first_name, user_info.last_name);
             }else{
                 msg.send({
                     message: 'Типа умный ? Тебе же писали, ОТВЕТ ЗАПИСАН, сука...',
@@ -676,11 +810,11 @@ bot.hear(/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/, async(msg) => {
         case 'AddinLine':
             if(CheckLines(msg.senderId) == true){
                 msg.send({
-                    message: 'Я добавил тебя в списки, жди до 22:00, я скину в автоматическом режиме итоговый список',
+                    message: 'Я добавил тебя в списки, жди до 22:30, я скину в автоматическом режиме итоговый список',
                     keyboard: main_menu.oneTime()
                 });
                 //Добавить в массив ответ от 1-4
-                AddinLines(msg.senderId, msg.text);
+                AddinLines(msg.senderId, msg.text, user_info.first_name, user_info.last_name);
                 SaveLastMove(msg.senderId, 'main_menu');
             }else{
                 msg.send({
@@ -688,6 +822,31 @@ bot.hear(/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/, async(msg) => {
                     keyboard: main_menu.oneTime()
                 })
             }
+        break;
+        case 'ChetNechet':
+            SaveLastMove(msg.senderId, code);
+            msg.send({
+                message: 'На какой день тебе нужно расписание ?',
+                keyboard: dayweek.oneTime()
+            });
+        break;
+        case 'CoinFlip':
+            msg.send({
+                message: Coinflip(),
+                keyboard: randomize_menu.oneTime()
+            });
+        break;
+        case 'randnuminfo':
+            msg.send({
+                message: 'Напиши короче вот так, а я уже буду ралять<br>5, 10',
+                keyboard: randomize_menu.oneTime()
+            });
+        break;
+        case 'randnum':
+            randnum(msg.senderId, msg.text);
+            msg.send({
+                keyboard: randomize_menu.oneTime()
+            });
         break;
 
         /*Ошибка*/
@@ -709,8 +868,7 @@ bot.hear(/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/, async(msg) => {
         }
     } //work code
 
-    const [user_info] = await vk.api.users.get({user_id: msg.senderId, fields: "sex"})
-    CheckUser(msg.senderId, user_info.first_name, user_info.last_name, user_info.sex, code);
+    CheckUser(msg.senderId, user_info.first_name, user_info.last_name, user_info.sex, code, user_info_bdate.bdate); //нужно переделать ! сначала проверка на существование через id а потом перекидывать сраныйм архивом данные
 })
 
 /*Лог ?*/
